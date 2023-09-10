@@ -8,3 +8,5 @@ export const apiSlice = createApi({
   tagTypes: ["Products", "Users", "Orders"],
   endpoints: (builder) => ({}),
 });
+
+export const { useGetProductsQuery } = apiSlice;
