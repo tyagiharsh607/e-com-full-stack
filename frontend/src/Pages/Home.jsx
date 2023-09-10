@@ -1,27 +1,34 @@
 import Product from "../components/Product";
 import { Row, Col } from "react-bootstrap";
 import { useGetProductsQuery } from "../Slices/productsApiSlice";
+// import { productsApiSlice } from "../Slices/productsApiSlice";
+import Loader from "../components/Loader";
+import Message from "../components/Message";
+import { Alert } from "react-bootstrap";
 
 const Home = () => {
   const { data: products, isLoading, error } = useGetProductsQuery();
-  console.log(" useGetProductsQuery", useGetProductsQuery());
+  // console.log(" productsApiSlice", productsApiSlice);
   return (
     <>
-      {/* {isLoading ? (
-        <p>Loading...</p>
+      {isLoading ? (
+        <Loader />
       ) : error ? (
-        <div>{error?.data?.message || error.error}</div>
+        <Message variant="danger">
+          {error?.data?.message || error.error}
+        </Message>
       ) : (
-        <></>
-      )} */}
-      <h1>Latest Products</h1>
-      <Row>
-        {products.map((product) => (
-          <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-            <Product product={product} />
-          </Col>
-        ))}
-      </Row>
+        <>
+          <h1>Latest Products</h1>
+          <Row>
+            {products.map((product) => (
+              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                <Product product={product} />
+              </Col>
+            ))}
+          </Row>
+        </>
+      )}
     </>
   );
 };
