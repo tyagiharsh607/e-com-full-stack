@@ -12,3 +12,12 @@ export const apiSlice = createApi({
 function addTwoNumbers(a, b) {
   return a + b;
 }
+
+function multiplyTwoNumbers(a, b) {
+  return a * b;
+}
+function averageTwoNumbers(a, b) {
+  return (a + b) / 2;
+}
+
+export const { useGetProductsQuery } = apiSlice;
