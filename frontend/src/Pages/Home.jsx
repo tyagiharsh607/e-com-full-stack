@@ -5,12 +5,21 @@ import { useGetProductsQuery } from "../Slices/productsApiSlice";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { Alert } from "react-bootstrap";
+import { useParams, Link } from "react-router-dom";
+import ProductCarousel from "../components/ProductCarousel";
 
 const Home = () => {
-  const { data: products, isLoading, error } = useGetProductsQuery();
-  // console.log(" productsApiSlice", productsApiSlice);
+  const { keyword } = useParams();
+  const { data: products, isLoading, error } = useGetProductsQuery(keyword);
   return (
     <>
+      {!keyword ? (
+        <ProductCarousel />
+      ) : (
+        <Link to="/" className="btn btn-light">
+          Go Back
+        </Link>
+      )}
       {isLoading ? (
         <Loader />
       ) : error ? (
