@@ -1,54 +1,57 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  Form,
   Row,
   Col,
   Image,
   ListGroup,
   Card,
   Button,
+  Form,
 } from "react-bootstrap";
-import Rating from "../components/Rating";
+import { toast } from "react-toastify";
 import {
   useGetProductDetailsQuery,
   useCreateReviewMutation,
 } from "../Slices/productsApiSlice";
+import Rating from "../components/Rating";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import Meta from "../components/Meta";
 import { addToCart } from "../Slices/cartSlice";
-import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
 
-const ProductScreen = () => {
+const ProductPage = () => {
   const { id: productId } = useParams();
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [qty, setQty] = useState(1);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+
+  const addToCartHandler = () => {
+    dispatch(addToCart({ ...product, qty }));
+    navigate("/cart");
+  };
 
   const {
     data: product,
     isLoading,
-    error,
     refetch,
+    error,
   } = useGetProductDetailsQuery(productId);
+
+  const { userInfo } = useSelector((state) => state.auth);
 
   const [createReview, { isLoading: loadingProductReview }] =
     useCreateReviewMutation();
 
-  const { userInfo } = useSelector((state) => state.auth);
-
-  const addToCartHandler = () => {
-    dispatch(addToCart({ ...product, qty }));
-    navigate(`/cart`);
-  };
-
   const submitHandler = async (e) => {
     e.preventDefault();
+
     try {
       await createReview({
         productId,
@@ -56,11 +59,9 @@ const ProductScreen = () => {
         comment,
       }).unwrap();
       refetch();
-      setRating(0);
-      setComment("");
-      toast.success("Review Submitted");
-    } catch (error) {
-      toast.error(error?.data?.message || error.error);
+      toast.success("Review created successfully");
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
     }
   };
 
@@ -196,7 +197,6 @@ const ProductScreen = () => {
                       <Form.Group className="my-2" controlId="comment">
                         <Form.Label>Comment</Form.Label>
                         <Form.Control
-                          as="textarea"
                           row="3"
                           required
                           value={comment}
@@ -226,4 +226,4 @@ const ProductScreen = () => {
   );
 };
 
-export default ProductScreen;
+export default ProductPage;

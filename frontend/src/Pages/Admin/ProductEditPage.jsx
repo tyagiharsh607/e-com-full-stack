@@ -8,25 +8,11 @@ import { toast } from "react-toastify";
 import {
   useGetProductDetailsQuery,
   useUpdateProductMutation,
-  useUploadImageMutation,
   useUploadProductImageMutation,
 } from "../../Slices/productsApiSlice";
 
 const ProductEditPage = () => {
   const { id: productId } = useParams();
-
-  const {
-    data: product,
-    isLoading,
-    refetch,
-    error,
-  } = useGetProductDetailsQuery(productId);
-  const [updateProduct, { isLoading: loadingUpdate, error: errorUpdate }] =
-    useUpdateProductMutation();
-  const [uploadProductImage, { isLoading: loadingUpload }] =
-    useUploadImageMutation();
-
-  const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
@@ -35,18 +21,22 @@ const ProductEditPage = () => {
   const [category, setCategory] = useState("");
   const [countInStock, setCountInStock] = useState(0);
   const [description, setDescription] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
 
-  useEffect(() => {
-    if (product) {
-      setName(product.name);
-      setPrice(product.price);
-      setImage(product.image);
-      setBrand(product.brand);
-      setCategory(product.category);
-      setCountInStock(product.countInStock);
-      setDescription(product.description);
-    }
-  }, [product]);
+  const {
+    data: product,
+    isLoading,
+    refetch,
+    error,
+  } = useGetProductDetailsQuery(productId);
+
+  const [updateProduct, { isLoading: loadingUpdate }] =
+    useUpdateProductMutation();
+
+  const [uploadProductImage, { isLoading: loadingUpload }] =
+    useUploadProductImageMutation();
+
+  const navigate = useNavigate();
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -55,30 +45,59 @@ const ProductEditPage = () => {
         productId,
         name,
         price,
-        image,
+        image: imageUrl,
         brand,
         category,
-        countInStock,
         description,
-      }).unwrap();
-      toast.success("Product Updated Successfully");
+        countInStock,
+      }).unwrap(); // NOTE: here we need to unwrap the Promise to catch any rejection in our catch block
+      toast.success("Product updated");
       refetch();
       navigate("/admin/productlist");
-    } catch (error) {
-      toast.error(error?.data?.message || error.error);
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
     }
   };
 
+  useEffect(() => {
+    if (product) {
+      setName(product.name);
+      setPrice(product.price);
+      setImageUrl(product.image);
+      setBrand(product.brand);
+      setCategory(product.category);
+      setCountInStock(product.countInStock);
+      setDescription(product.description);
+    }
+  }, [product]);
+
   const uploadFileHandler = async (e) => {
+    e.preventDefault();
     const formData = new FormData();
-    formData.append("image", e.target.files[0]);
+    formData.append("file", e.target.files[0]);
+    formData.append("upload_preset", "jsziq7di");
+    let data = "";
+
     try {
-      const res = await uploadProductImage(formData).unwrap();
-      toast.success("Image Uploaded Successfully");
-      setImage(res.image);
-      console.log("res", res);
-    } catch (error) {
-      toast.error(error?.data?.message || error.message);
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/dlxmlegln/image/upload",
+        {
+          method: "POST",
+          body: formData,
+          headers: {
+            "X-Requested-With": "XMLHttpRequest",
+          },
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          setImageUrl(data.secure_url);
+        });
+      toast.success(res?.message);
+      // setImage(res.image);
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
     }
   };
 
@@ -122,13 +141,19 @@ const ProductEditPage = () => {
                 type="text"
                 placeholder="Enter image url"
                 value={image}
-                onChange={(e) => setImage(e.target.value)}
+                onChange={(e) => {
+                  console.log(e.target.value);
+                  console.log("grf");
+                  setImage(e.target.value);
+                }}
               ></Form.Control>
+
               <Form.Control
                 label="Choose File"
                 onChange={uploadFileHandler}
                 type="file"
               ></Form.Control>
+
               {loadingUpload && <Loader />}
             </Form.Group>
 

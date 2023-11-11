@@ -38,6 +38,10 @@ const createProduct = asyncHandler(async (req, res) => {
 const updateProduct = asyncHandler(async (req, res) => {
   const { name, price, description, image, brand, category, countInStock } =
     req.body;
+  console.log("image", image);
+  // cloudinary.uploader.upload(file.tempFilePath, async (err, result) => {
+  //   console.log("result", result);
+  // });
   const product = await Product.findById(req.params.id);
   if (product) {
     product.name = name;
