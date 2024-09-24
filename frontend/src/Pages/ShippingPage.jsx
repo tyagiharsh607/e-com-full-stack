@@ -10,12 +10,14 @@ const ShippingPage = () => {
   const cart = useSelector((state) => state.cart);
   const { shippingAddress } = cart;
 
-  const [address, setAddress] = useState(shippingAddress?.address || "");
-  const [city, setCity] = useState(shippingAddress?.city || "");
-  const [postalCode, setPostalCode] = useState(
-    shippingAddress?.postalCode || ""
+  const [address, setAddress] = useState(
+    shippingAddress?.address || "123 Main St, Sector 5"
   );
-  const [country, setCountry] = useState(shippingAddress?.country || "");
+  const [city, setCity] = useState(shippingAddress?.city || "New Delhi");
+  const [postalCode, setPostalCode] = useState(
+    shippingAddress?.postalCode || "110001"
+  );
+  const [country, setCountry] = useState(shippingAddress?.country || "India");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Form, Button, Row, Col } from "react-bootstrap";
+import { Form, Button, Row, Col, Alert } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
@@ -9,8 +9,8 @@ import { setCredentials } from "../Slices/authSlice";
 import { toast } from "react-toastify";
 
 const LoginScreen = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("tyagiharsh607@gmail.com");
+  const [password, setPassword] = useState("tyagiharsh607");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -42,6 +42,13 @@ const LoginScreen = () => {
   return (
     <FormContainer>
       <h1>Sign In</h1>
+
+      {/* Add the message about test credentials */}
+      <Alert variant="info">
+        Note: Test credentials are pre-filled in the form. <br />
+        <strong>Email:</strong> tyagiharsh607@gmail.com <br />
+        <strong>Password:</strong> tyagiharsh607
+      </Alert>
 
       <Form onSubmit={submitHandler}>
         <Form.Group className="my-2" controlId="email">

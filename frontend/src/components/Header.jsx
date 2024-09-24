@@ -11,10 +11,11 @@ import { useLogoutMutation } from "../Slices/usersApiSlice";
 const Header = () => {
   const { cartItems } = useSelector((state) => state.cart);
   const { userInfo } = useSelector((state) => state.auth);
+  console.log(userInfo);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [logoutApiCall, { isLoading }] = useLogoutMutation();
+  const [logoutApiCall] = useLogoutMutation();
 
   const logoutHandler = async () => {
     try {
@@ -53,7 +54,10 @@ const Header = () => {
 
               {userInfo ? (
                 <>
-                  <NavDropdown title={userInfo.name} id="username">
+                  <NavDropdown
+                    title={userInfo?.data?.name || userInfo?.name}
+                    id="username"
+                  >
                     <LinkContainer to="/profile">
                       <NavDropdown.Item>Profile</NavDropdown.Item>
                     </LinkContainer>

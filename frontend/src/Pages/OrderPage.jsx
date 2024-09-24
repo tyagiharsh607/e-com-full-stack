@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import {
-  useCreateOrderMutation,
   useGetOrderDetailsQuery,
   usePayOrderMutation,
   useGetPaypalClientIdQuery,
@@ -26,8 +25,7 @@ const OrderPage = () => {
 
   const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
 
-  const [deliverOrder, { isLoading: loadingDeliver }] =
-    useDeliverOrderMutation();
+  const [deliverOrder] = useDeliverOrderMutation();
 
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -70,14 +68,6 @@ const OrderPage = () => {
       }
     });
   }
-
-  // TESTING ONLY! REMOVE BEFORE PRODUCTION
-  // async function onApproveTest() {
-  //   await payOrder({ orderId, details: { payer: {} } });
-  //   refetch();
-
-  //   toast.success('Order is paid');
-  // }
 
   function onError(err) {
     toast.error(err.message);
@@ -225,20 +215,30 @@ const OrderPage = () => {
                     <Loader />
                   ) : (
                     <div>
-                      {/* THIS BUTTON IS FOR TESTING! REMOVE BEFORE PRODUCTION! */}
-                      {/* <Button
-                        style={{ marginBottom: '10px' }}
-                        onClick={onApproveTest}
-                      >
-                        Test Pay Order
-                      </Button> */}
-
                       <div>
                         <PayPalButtons
+                          fundingSource="paypal" // Ensures only the PayPal button shows
                           createOrder={createOrder}
                           onApprove={onApprove}
                           onError={onError}
-                        ></PayPalButtons>
+                        />
+                      </div>
+
+                      <div className="my-3 p-3 border rounded">
+                        <h5 className="text-center">Test PayPal Credentials</h5>
+                        <p className="text-center">
+                          <strong>Email: </strong>
+                          <span className="text-info">
+                            sb-j3hbh27700422@personal.example.com
+                          </span>
+                        </p>
+                        <p className="text-center">
+                          <strong>Password: </strong>
+                          <span className="text-info">xSXOZ7W?</span>
+                        </p>
+                        <p className="text-muted text-center">
+                          (For testing purposes only)
+                        </p>
                       </div>
                     </div>
                   )}

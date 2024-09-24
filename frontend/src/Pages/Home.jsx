@@ -10,6 +10,7 @@ import ProductCarousel from "../components/ProductCarousel";
 
 const Home = () => {
   const { keyword } = useParams();
+
   const { data: products, isLoading, error } = useGetProductsQuery(keyword);
   return (
     <>
