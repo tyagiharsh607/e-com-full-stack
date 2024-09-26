@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/tyagiharsh607/e-com-full-stack#readme",
   "dependencies": {
+    "axios": "^1.7.7",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.41.0",
     "cookie-parser": "^1.4.6",
