@@ -8,11 +8,10 @@ import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import productRoutes from "./routes/productRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
-
-
 import axios from "axios";
 
 const app = express();
+
 dotenv.config();
 
 const url = `https://e-com-hk31.onrender.com/`;
@@ -37,8 +36,6 @@ function reloadWebsite() {
 }
 
 setInterval(reloadWebsite, interval);
-
-
 
 app.use(
   cors({
