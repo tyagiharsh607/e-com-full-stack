@@ -66,9 +66,6 @@ To set up the project locally, follow these steps:
    npm run dev
    ```
 
-6. **Access the application:**
-   Open your browser and navigate to `http://localhost:3000`.
-
 
 ## Future Improvements
 
