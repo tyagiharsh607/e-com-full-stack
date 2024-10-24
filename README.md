@@ -12,10 +12,6 @@ This is a full-stack e-commerce web application that provides a user-friendly sh
 
 [Click here to view the live demo](https://e-com-hk31.onrender.com/)
 
-### GitHub Repository
-
-[Click here to view the repository](https://github.com/tyagiharsh607/e-com-full-stack)
-
 ## Features
 
 - **Home Page**: Displays featured products and offers a welcoming interface for users.
@@ -73,13 +69,6 @@ To set up the project locally, follow these steps:
 6. **Access the application:**
    Open your browser and navigate to `http://localhost:3000`.
 
-## Screenshots
-
-![Homepage](https://drive.google.com/file/d/13gSYlHDEkb-iDL0CLQ5znP6EXkSVa9MZ/view?usp=drive_link)
-*Homepage with featured products.*
-
-![Shop](https://drive.google.com/file/d/13gSYlHDEkb-iDL0CLQ5znP6EXkSVa9MZ/view?usp=drive_link)
-*Product listings in the shop section.*
 
 ## Future Improvements
 
